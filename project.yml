@@ -1,0 +1,68 @@
+name: Huaci
+
+options:
+  deploymentTarget:
+    macOS: "15.0"
+  createIntermediateGroups: true
+  developmentLanguage: zh-Hans
+
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    MARKETING_VERSION: "0.1.0"
+    CURRENT_PROJECT_VERSION: "1"
+
+packages:
+  KeyboardShortcuts:
+    url: https://github.com/sindresorhus/KeyboardShortcuts
+    from: "2.0.0"
+
+targets:
+  Huaci:
+    type: application
+    platform: macOS
+    sources:
+      - path: Huaci
+    # Signing values come from Configs/Signing.xcconfig (+ optional Configs/Local.xcconfig).
+    configFiles:
+      Debug: Configs/Signing.xcconfig
+      Release: Configs/Signing.xcconfig
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: $(HUACI_BUNDLE_ID)
+        DEVELOPMENT_TEAM: $(HUACI_DEVELOPMENT_TEAM)
+        CODE_SIGN_IDENTITY: $(HUACI_CODE_SIGN_IDENTITY)
+        CODE_SIGN_STYLE: Automatic
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_LSUIElement: YES
+        INFOPLIST_KEY_CFBundleDisplayName: 划词
+        INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.productivity
+        SWIFT_STRICT_CONCURRENCY: minimal
+      configs:
+        Release:
+          ENABLE_HARDENED_RUNTIME: YES
+    dependencies:
+      - package: KeyboardShortcuts
+    scheme:
+      testTargets:
+        - HuaciTests
+
+  # Logic-only tests: they compile the pure files directly, so no app host is launched.
+  HuaciTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - path: HuaciTests
+      - path: Huaci/Support/StringExtensions.swift
+      - path: Huaci/Translation/LanguageDirection.swift
+      - path: Huaci/Translation/LLMRequest.swift
+      - path: Huaci/Translation/LLMStreamDecoder.swift
+      - path: Huaci/Dictionary/DictionaryEntry.swift
+      - path: Huaci/Dictionary/DictionaryStore.swift
+      - path: Huaci/Resources/Dictionary.sqlite
+        buildPhase: resources
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: app.huaci.HuaciTests
+        GENERATE_INFOPLIST_FILE: YES
+        SWIFT_STRICT_CONCURRENCY: minimal

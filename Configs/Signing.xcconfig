@@ -1,0 +1,9 @@
+// Default: ad-hoc "Sign to Run Locally".
+// With ad-hoc signing, macOS forgets the Accessibility permission after every rebuild.
+// To keep it, copy Local.xcconfig.example to Local.xcconfig and fill in your Team ID.
+
+HUACI_BUNDLE_ID = app.huaci.Huaci
+HUACI_DEVELOPMENT_TEAM =
+HUACI_CODE_SIGN_IDENTITY = -
+
+#include? "Local.xcconfig"

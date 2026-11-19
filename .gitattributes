@@ -1,0 +1,5 @@
+# macOS project: keep LF in the working copy even on Windows (scripts/mac-build.sh breaks with CRLF).
+* text=auto eol=lf
+
+# Bundled dictionary database
+*.sqlite binary

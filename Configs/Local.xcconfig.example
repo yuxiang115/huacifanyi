@@ -1,0 +1,6 @@
+// Copy to Configs/Local.xcconfig (git-ignored) and fill in your own values.
+// Team ID: Xcode > Settings > Accounts, or https://developer.apple.com/account (a free Apple ID works).
+
+HUACI_DEVELOPMENT_TEAM = ABCDE12345
+HUACI_CODE_SIGN_IDENTITY = Apple Development
+// HUACI_BUNDLE_ID = com.yourname.huaci
