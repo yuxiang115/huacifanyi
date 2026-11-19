@@ -2,6 +2,15 @@
 
 macOS 菜单栏划词翻译：在任何应用里选中文字，按 **⌥D**，译文就出现在鼠标旁边。
 
+## 下载安装
+
+到 [Releases](https://github.com/yuxiang115/huacifanyi/releases/latest) 下载最新的 `Huaci-x.y.z.dmg`。打开后把「划词」拖进「应用程序」。支持 Apple Silicon 和 Intel，需要 macOS 15 及以上。
+
+安装后的两个步骤：
+
+1. **首次打开被拦截**：安装包没有经过苹果公证，第一次打开时系统会提示「无法验证开发者」。到「系统设置 → 隐私与安全性」，在页面底部点「仍要打开」。
+2. **授予辅助功能权限**：按 App 里的引导操作。每次更新到新版本后，需要在辅助功能列表里把「划词」删掉再重新添加。
+
 ## 现在能做什么（v0.1）
 
 - **触发**：⌥D 翻译选中文字（快捷键可在设置里改）；也可以从菜单栏触发，或直接在弹窗里输入文字后回车。
@@ -68,6 +77,17 @@ curl -LO https://raw.githubusercontent.com/skywind3000/ECDICT/master/ecdict.csv
 python3 scripts/build_dictionary.py ecdict.csv Huaci/Resources/Dictionary.sqlite
 ```
 
+## 发布新版本
+
+```bash
+git tag v0.2.0
+git push origin v0.2.0
+```
+
+推送 `v*` 标签后，GitHub Actions（`.github/workflows/release.yml`）会依次：跑测试、编译 Apple Silicon + Intel 通用版、打包成 DMG、发布到 GitHub Release。版本号取自标签名。
+
+应用图标的源文件是 `Design/AppIcon.svg`。改完后在 Mac 上执行 `swift scripts/render_icon.swift`，重新生成各个尺寸。
+
 ## LLM 配置示例
 
 | 服务 | 接口格式 | 地址 | 模型 |
@@ -98,7 +118,7 @@ scripts/           Windows → Mac 同步编译脚本
 
 - **M2 体验**：划词后鼠标旁出现小图标、交换翻译方向、单词卡片显示例句、真人发音（可选，需联网）
 - **M3 扩展**：截图识字翻译（Vision）、独立的输入翻译窗口、历史记录
-- **M4 发布**：Developer ID 签名和公证、Sparkle 自动更新、DMG 安装包
+- **M4 发布**：Developer ID 签名和公证（不再被系统拦截，更新后也不用重新授权）、Sparkle 自动更新
 
 ## 已知限制
 

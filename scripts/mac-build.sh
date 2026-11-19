@@ -51,7 +51,8 @@ case "$ACTION" in
       -destination $DESTINATION -derivedDataPath build/DerivedData $SIGNING $QUIET_FILTER"
     echo "==> Built ~/$REMOTE_DIR/$APP"
     if [ "$ACTION" = run ]; then
-      remote "pkill -x Huaci || true; open '$APP'"
+      # Wait for the old instance to exit, otherwise `open` fails with -600.
+      remote "pkill -x Huaci; while pgrep -qx Huaci; do sleep 0.2; done; open '$APP'"
       echo "==> Launched"
     fi
     ;;

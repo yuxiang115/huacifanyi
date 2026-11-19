@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <!-- Huaci app icon: a line of text selected (highlight + I-beam) with a translate badge.
+       macOS icon grid: 824×824 body inset 100px on a 1024 canvas. -->
+  <defs>
+    <linearGradient id="body" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#5B8CFF"/>
+      <stop offset="1" stop-color="#5A3FE0"/>
+    </linearGradient>
+    <linearGradient id="arrows" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4F7BFF"/>
+      <stop offset="1" stop-color="#5A3FE0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- soft shadow under the body -->
+  <rect x="100" y="114" width="824" height="824" rx="185" fill="#000000" opacity="0.18"/>
+  <!-- body -->
+  <rect x="100" y="100" width="824" height="824" rx="185" fill="url(#body)"/>
+
+  <!-- text lines -->
+  <rect x="230" y="290" width="520" height="56" rx="28" fill="#FFFFFF" opacity="0.88"/>
+
+  <!-- selected line: highlight + dark text bar -->
+  <rect x="206" y="392" width="492" height="104" rx="24" fill="#FFD84D"/>
+  <rect x="236" y="416" width="420" height="56" rx="28" fill="#3B2FA8"/>
+
+  <!-- I-beam cursor at the end of the selection -->
+  <g stroke="#FFFFFF" stroke-width="16" stroke-linecap="round" fill="none">
+    <line x1="724" y1="372" x2="724" y2="516"/>
+    <line x1="698" y1="372" x2="750" y2="372"/>
+    <line x1="698" y1="516" x2="750" y2="516"/>
+  </g>
+
+  <rect x="230" y="546" width="380" height="56" rx="28" fill="#FFFFFF" opacity="0.88"/>
+  <rect x="230" y="648" width="250" height="56" rx="28" fill="#FFFFFF" opacity="0.6"/>
+
+  <!-- translate badge -->
+  <circle cx="700" cy="714" r="150" fill="#000000" opacity="0.15"/>
+  <circle cx="700" cy="704" r="150" fill="#FFFFFF"/>
+  <g stroke="url(#arrows)" stroke-width="28" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <path d="M615 660 H780"/>
+    <path d="M740 620 L780 660 L740 700"/>
+    <path d="M785 750 H620"/>
+    <path d="M660 710 L620 750 L660 790"/>
+  </g>
+</svg>

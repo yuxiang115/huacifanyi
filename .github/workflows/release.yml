@@ -1,0 +1,51 @@
+name: release
+
+# Push a tag like v0.1.0 to build a universal (Apple Silicon + Intel) app,
+# package it as a DMG and publish it as a GitHub Release.
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Generate project
+        run: xcodegen generate
+
+      - name: Test
+        run: |
+          xcodebuild test -quiet -project Huaci.xcodeproj -scheme Huaci \
+            -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO
+
+      - name: Build universal Release app
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
+          # Ad-hoc signed: there is no Developer ID certificate in CI.
+          xcodebuild build -quiet -project Huaci.xcodeproj -scheme Huaci -configuration Release \
+            -destination 'generic/platform=macOS' -derivedDataPath build \
+            ARCHS="arm64 x86_64" ONLY_ACTIVE_ARCH=NO \
+            HUACI_CODE_SIGN_IDENTITY=- HUACI_DEVELOPMENT_TEAM= \
+            MARKETING_VERSION="$VERSION" CURRENT_PROJECT_VERSION="${{ github.run_number }}"
+          codesign --verify --deep --strict build/Build/Products/Release/Huaci.app
+          lipo -archs build/Build/Products/Release/Huaci.app/Contents/MacOS/Huaci
+
+      - name: Package DMG
+        run: bash scripts/make_dmg.sh build/Build/Products/Release/Huaci.app "Huaci-$VERSION.dmg"
+
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" "Huaci-$VERSION.dmg" \
+            --title "Huaci $VERSION" --generate-notes \
+            --notes "下载 Huaci-$VERSION.dmg，打开后把「划词」拖进「应用程序」。首次打开如被系统拦截：系统设置 → 隐私与安全性 → 仍要打开。"
